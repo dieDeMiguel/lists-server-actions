@@ -17,7 +17,7 @@ export default async function Users({
   const page: number =
     typeof params.page === "string" &&
     +params.page > 1 &&
-    +params.page <= Math.ceil(totalUsers / perPage)
+    +params.page <= totalPages
       ? +params.page
       : 1;
   const users = await prisma.user.findMany({
