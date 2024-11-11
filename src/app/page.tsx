@@ -14,7 +14,12 @@ export default async function Users({
   const totalUsers = await prisma.user.count();
   const totalPages = Math.ceil(totalUsers / perPage);
   const params = await searchParams;
-  const page: number = typeof params.page === "string" ? +params.page : 1;
+  const page: number =
+    typeof params.page === "string" &&
+    +params.page > 1 &&
+    +params.page <= Math.ceil(totalUsers / perPage)
+      ? +params.page
+      : 1;
   const users = await prisma.user.findMany({
     take: 6,
     skip: (page - 1) * 6,
