@@ -4,13 +4,21 @@ import {
   MagnifyingGlassIcon,
 } from "@heroicons/react/20/solid";
 
-export default async function Users() {
-  const users = await prisma.user.findMany();
+export default async function Users({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const params = await searchParams;
+  const page: string = params.page as string;
+  const users = await prisma.user.findMany({
+    take: 6,
+    skip: (parseInt(page) - 1) * 6,
+  });
 
   return (
     <div className="bg-gray-50 min-h-screen px-4 sm:px-6 lg:px-8 pt-12 flex justify-center">
       <div className="w-full sm:w-[600px] md:w-[700px] lg:w-[900px]">
-        {/* Barra de búsqueda y botón "Add user" */}
         <div className="flex items-center justify-between">
           <div className="w-full sm:w-80">
             <div className="relative mt-1 rounded-md shadow-sm">
@@ -38,8 +46,6 @@ export default async function Users() {
             </button>
           </div>
         </div>
-
-        {/* Tabla de usuarios */}
         <div className="mt-8 flow-root">
           <div className="-my-2 -mx-6">
             <div className="inline-block min-w-full py-2 align-middle px-6">
