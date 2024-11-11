@@ -10,11 +10,14 @@ export default async function Users({
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
+  const perPage = 7;
+  const totalUsers = await prisma.user.count();
+  const totalPages = Math.ceil(totalUsers / perPage);
   const params = await searchParams;
-  const page: string = params.page as string;
+  const page: number = typeof params.page === "string" ? +params.page : 1;
   const users = await prisma.user.findMany({
     take: 6,
-    skip: (parseInt(page) - 1) * 6,
+    skip: (page - 1) * 6,
   });
 
   return (
@@ -97,15 +100,36 @@ export default async function Users({
             </div>
           </div>
         </div>
-        <div className="">
-          <Link
-            className="py-4 text-gray-500 text-lg"
-            href={`/?page=${page + 1}`}
-          >
-            Next
-          </Link>
+        <div className="mt-4 flex items-center justify-between">
+          <p className="text-sm text-gray-700">
+            Showing{" "}
+            <span className="font-semibold">{(page - 1) * perPage + 1}</span> to{" "}
+            <span className="font-semibold">
+              {Math.min(page * perPage, totalUsers)}
+            </span>{" "}
+            of <span className="font-semibold">{totalUsers}</span> users
+          </p>
+          <div className="space-x-2">
+            <Link
+              href={page > 2 ? `/?page=${page - 1}` : "/"}
+              className={`${
+                page === 1 ? "pointer-events-none opacity-50" : ""
+              } inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-semibold text-gray-900 hover:bg-gray-50`}
+            >
+              Previous
+            </Link>
+            <Link
+              href={page < totalPages ? `/?page=${page + 1}` : `/?page=${page}`}
+              className={`${
+                page >= totalPages ? "pointer-events-none opacity-50" : ""
+              } inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-semibold text-gray-900 hover:bg-gray-50`}
+            >
+              Next
+            </Link>
+          </div>
         </div>
       </div>
+      .
     </div>
   );
 }
