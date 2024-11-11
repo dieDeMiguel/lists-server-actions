@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { prisma } from "../../lib/prisma";
 import {
   ChevronRightIcon,
@@ -17,7 +18,7 @@ export default async function Users({
   });
 
   return (
-    <div className="bg-gray-50 min-h-screen px-4 sm:px-6 lg:px-8 pt-12 flex justify-center">
+    <div className="bg-gray-50 min-h-screen px-4 sm:px-6 lg:px-8 pt-12 flex flex-col items-center justify-center">
       <div className="w-full sm:w-[600px] md:w-[700px] lg:w-[900px]">
         <div className="flex items-center justify-between">
           <div className="w-full sm:w-80">
@@ -73,7 +74,7 @@ export default async function Users({
                         <td className="whitespace-nowrap py-4 pr-3 text-sm font-medium text-gray-900 pl-4">
                           {user.id}
                         </td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm font-medium max-w-[130px] sm:w-auto truncate">
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 font-medium max-w-[130px] sm:w-auto truncate">
                           {user.name}
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 max-w-[175px] sm:w-auto truncate">
@@ -95,6 +96,14 @@ export default async function Users({
               </div>
             </div>
           </div>
+        </div>
+        <div className="">
+          <Link
+            className="py-4 text-gray-500 text-lg"
+            href={`/?page=${page + 1}`}
+          >
+            Next
+          </Link>
         </div>
       </div>
     </div>
