@@ -1,9 +1,7 @@
 import Link from "next/link";
 import { prisma } from "../../lib/prisma";
-import {
-  ChevronRightIcon,
-  MagnifyingGlassIcon,
-} from "@heroicons/react/20/solid";
+import { ChevronRightIcon } from "@heroicons/react/20/solid";
+import SearchInput from "./search-input";
 
 export default async function Users({
   searchParams,
@@ -11,9 +9,16 @@ export default async function Users({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const perPage = 7;
-  const totalUsers = await prisma.user.count();
-  const totalPages = Math.ceil(totalUsers / perPage);
   const params = await searchParams;
+  const search = typeof params.search === "string" ? params.search : undefined;
+  const totalUsers = await prisma.user.count({
+    where: {
+      name: {
+        contains: search,
+      },
+    },
+  });
+  const totalPages = Math.ceil(totalUsers / perPage);
   const page: number =
     typeof params.page === "string" &&
     +params.page > 1 &&
@@ -23,6 +28,11 @@ export default async function Users({
   const users = await prisma.user.findMany({
     take: 6,
     skip: (page - 1) * 6,
+    where: {
+      name: {
+        contains: search,
+      },
+    },
   });
 
   return (
@@ -30,21 +40,7 @@ export default async function Users({
       <div className="w-full sm:w-[600px] md:w-[700px] lg:w-[900px]">
         <div className="flex items-center justify-between">
           <div className="w-full sm:w-80">
-            <div className="relative mt-1 rounded-md shadow-sm">
-              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                <MagnifyingGlassIcon
-                  className="h-5 w-5 text-gray-400"
-                  aria-hidden="true"
-                />
-              </div>
-              <input
-                type="text"
-                name="search"
-                id="search"
-                className="block w-full rounded-md border-gray-300 pl-10 focus:ring-0 focus:border-gray-400 focus:outline-none text-sm"
-                placeholder="Search"
-              />
-            </div>
+            <SearchInput />
           </div>
           <div className="mt-0 sm:ml-4 flex-none">
             <button
