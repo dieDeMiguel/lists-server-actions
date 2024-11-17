@@ -51,7 +51,6 @@ export default function AddUserForm() {
       toast({
         title: "Error",
         description: errorMessage,
-        status: "error",
       });
     }
   }
