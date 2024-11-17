@@ -35,6 +35,14 @@ export default async function Users({
     },
   });
 
+  const currentSearchParams = new URLSearchParams();
+  if (search) {
+    currentSearchParams.set("search", search);
+  }
+  if (page > 1) {
+    currentSearchParams.set("page", page.toString());
+  }
+
   return (
     <div className="bg-gray-50 min-h-screen px-4 sm:px-6 lg:px-8 pt-12 flex flex-col items-center justify-center">
       <div className="w-full sm:w-[600px] md:w-[700px] lg:w-[900px]">
@@ -119,14 +127,11 @@ export default async function Users({
             >
               Previous
             </Link>
-            <Link
-              href={page < totalPages ? `/?page=${page + 1}` : `/?page=${page}`}
-              className={`${
-                page >= totalPages ? "pointer-events-none opacity-50" : ""
-              } inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-semibold text-gray-900 hover:bg-gray-50`}
-            >
-              Next
-            </Link>
+            <NextLink
+              currentSearchParams={currentSearchParams}
+              page={page}
+              totalPages={totalPages}
+            />
           </div>
         </div>
       </div>
@@ -134,3 +139,31 @@ export default async function Users({
     </div>
   );
 }
+
+const NextLink = ({
+  currentSearchParams,
+  page,
+  totalPages,
+}: {
+  currentSearchParams: URLSearchParams;
+  page: number;
+  totalPages: number;
+}) => {
+  const newSearchParams = new URLSearchParams(currentSearchParams);
+  newSearchParams.set("page", `${page + 1}`);
+  return page < totalPages ? (
+    <Link
+      href={`/?${newSearchParams}`}
+      className="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-semibold text-gray-900 hover:bg-gray-50"
+    >
+      Next
+    </Link>
+  ) : (
+    <button
+      disabled
+      className="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-semibold text-gray-900 opacity-50"
+    >
+      Next
+    </button>
+  );
+};

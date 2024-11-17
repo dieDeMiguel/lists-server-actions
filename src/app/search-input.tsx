@@ -25,6 +25,10 @@ export default function SearchInput({
         placeholder="Search"
         defaultValue={search}
         onChange={(e) => {
+          if (e.target.value === "") {
+            router.replace("/");
+            return;
+          }
           router.push(`/?search=${e.target.value}`);
         }}
       />
