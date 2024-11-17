@@ -1,4 +1,3 @@
-// src/components/popover/AddUserForm.tsx
 "use client";
 
 import {
@@ -13,8 +12,8 @@ import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { toast } from "sonner";
 import { createUser } from "@/actions/createUser";
+import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters long"),
@@ -32,19 +31,28 @@ export default function AddUserForm() {
     },
   });
 
+  const { toast } = useToast();
+
   async function onSubmit(data: FormData) {
     try {
       const formData = new FormData();
       formData.append("name", data.name);
       formData.append("email", data.email);
       const newUser = await createUser(formData);
-      toast.success(`User ${newUser.name} created successfully.`);
+      toast({
+        title: "User created",
+        description: `User ${newUser.name} was created successfully`,
+      });
       form.reset();
     } catch (error) {
       console.error("Error while creating user:", error);
       const errorMessage =
         error instanceof Error ? error.message : "Error while creating user";
-      toast.error(errorMessage);
+      toast({
+        title: "Error",
+        description: errorMessage,
+        status: "error",
+      });
     }
   }
 
