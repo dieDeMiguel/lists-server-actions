@@ -40,7 +40,7 @@ export default async function Users({
       <div className="w-full sm:w-[600px] md:w-[700px] lg:w-[900px]">
         <div className="flex items-center justify-between">
           <div className="w-full sm:w-80">
-            <SearchInput />
+            <SearchInput search={search} />
           </div>
           <div className="mt-0 sm:ml-4 flex-none">
             <button
