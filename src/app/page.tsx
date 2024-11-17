@@ -119,14 +119,10 @@ export default async function Users({
             of <span className="font-semibold">{totalUsers}</span> users
           </p>
           <div className="space-x-2">
-            <Link
-              href={page > 2 ? `/?page=${page - 1}` : "/"}
-              className={`${
-                page === 1 ? "pointer-events-none opacity-50" : ""
-              } inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-semibold text-gray-900 hover:bg-gray-50`}
-            >
-              Previous
-            </Link>
+            <PreviousLink
+              currentSearchParams={currentSearchParams}
+              page={page}
+            />
             <NextLink
               currentSearchParams={currentSearchParams}
               page={page}
@@ -140,6 +136,35 @@ export default async function Users({
   );
 }
 
+const PreviousLink = ({
+  currentSearchParams,
+  page,
+}: {
+  currentSearchParams: URLSearchParams;
+  page: number;
+}) => {
+  const newSearchParams = new URLSearchParams(currentSearchParams);
+  if (page > 2) {
+    newSearchParams.set("page", `${page - 1}`);
+  } else {
+    newSearchParams.delete("page");
+  }
+  return page > 1 ? (
+    <Link
+      href={`/?${newSearchParams}`}
+      className="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-semibold text-gray-900 hover:bg-gray-50"
+    >
+      Previous
+    </Link>
+  ) : (
+    <button
+      disabled
+      className="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-semibold text-gray-900 opacity-50"
+    >
+      Previous
+    </button>
+  );
+};
 const NextLink = ({
   currentSearchParams,
   page,
