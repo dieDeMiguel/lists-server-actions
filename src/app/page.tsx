@@ -4,6 +4,7 @@ import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import SearchInput from "./search-input";
 import { Suspense } from "react";
 import { Spinner } from "./components/spinner";
+import { User } from "@/interfaces/user";
 
 export default async function Users({
   searchParams,
@@ -99,7 +100,7 @@ async function UsersTable({
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
-                  {users.map((user) => (
+                  {users.map((user: User) => (
                     <tr key={user.id}>
                       <td className="whitespace-nowrap py-4 pr-3 text-sm font-medium text-gray-900 pl-4">
                         {user.id}
