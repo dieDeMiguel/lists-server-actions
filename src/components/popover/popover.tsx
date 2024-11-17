@@ -18,6 +18,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useForm } from "react-hook-form";
+import { prisma } from "../../../lib/prisma";
 
 export function PopoverDemo() {
   const formSchema = z.object({
@@ -27,14 +28,21 @@ export function PopoverDemo() {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+    },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       console.log(values);
+      const newUser = await prisma.user.create({ data: values });
       toast(
         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
+          <code className="text-white">
+            {JSON.stringify(values, null, 2)} User: {newUser.name} created
+          </code>
         </pre>
       );
     } catch (error) {
