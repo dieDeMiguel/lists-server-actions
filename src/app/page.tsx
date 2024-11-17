@@ -1,9 +1,11 @@
 import Link from "next/link";
-import { prisma } from "../../lib/prisma";
+import { prisma } from "../../client/prisma";
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import SearchInput from "./search-input";
 import { Suspense } from "react";
 import { Spinner } from "./components/spinner";
+import { User } from "@/interfaces/user";
+import { PopoverDemo } from "@/components/popover/popover";
 
 export default async function Users({
   searchParams,
@@ -21,12 +23,7 @@ export default async function Users({
             <SearchInput search={search} />
           </div>
           <div className="mt-0 sm:ml-4 flex-none">
-            <button
-              type="button"
-              className="block rounded-md bg-indigo-600 py-1.5 px-3 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              Add user
-            </button>
+            <PopoverDemo />
           </div>
         </div>
       </div>
@@ -99,7 +96,7 @@ async function UsersTable({
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
-                  {users.map((user) => (
+                  {users.map((user: User) => (
                     <tr key={user.id}>
                       <td className="whitespace-nowrap py-4 pr-3 text-sm font-medium text-gray-900 pl-4">
                         {user.id}
