@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { prisma } from "../../client/prisma";
+import { prisma } from "../lib/prisma";
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import SearchInput from "./search-input";
 import { Suspense } from "react";
