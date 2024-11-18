@@ -1,6 +1,7 @@
 "use server";
 import { z } from "zod";
 import { prisma } from "../lib/prisma";
+import { revalidatePath } from "next/cache";
 
 const formSchema = z.object({
   name: z.string().min(3),
@@ -20,6 +21,6 @@ export async function createUser(formData: FormData) {
   const newUser = await prisma.user.create({
     data: parsedData.data,
   });
-
+  revalidatePath("/");
   return newUser;
 }
