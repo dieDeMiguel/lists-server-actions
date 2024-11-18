@@ -2,8 +2,6 @@
 
 ## Exploring best practices using NextJS 15, Server Functions and Server Components
 
-&lt;div align="left"&gt; &lt;a href="[&lt;a href="https://lists-server-actions.vercel.app/"&gt;https://lists-server-actions.vercel.app/&lt;/a&gt;](https://lists-server-actions.vercel.app/)"&gt; Live Site &lt;/a&gt; &lt;/div&gt;
-
 ### Main Features
 
 - **Pagination**: Content is paginated to enhance user experience, allowing users to navigate through data efficiently.
