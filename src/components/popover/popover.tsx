@@ -4,19 +4,22 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import AddUserForm from "../add-user-form/add-user-form";
 
-export function PopoverDemo() {
+export function PopoverComponent({
+  children,
+  isCreateButton = true,
+}: {
+  children: React.ReactNode;
+  isCreateButton?: boolean;
+}) {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button type="button" variant="addUser">
-          Add user
+        <Button type="button" variant={isCreateButton ? "addUser" : "editUser"}>
+          {isCreateButton ? "Add user" : "Edit user"}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-80">
-        <AddUserForm />
-      </PopoverContent>
+      <PopoverContent className="w-80">{children}</PopoverContent>
     </Popover>
   );
 }
