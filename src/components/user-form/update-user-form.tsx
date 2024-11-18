@@ -61,17 +61,18 @@ export default function UpdateUserForm({ id }: { id: number }) {
       formData.append("id", id.toString());
       const newUser = await updateUser(formData);
       toast({
-        title: "User created",
-        description: `User ${newUser.name} was created successfully`,
+        title: "User Updated",
+        description: `User: ${newUser.name} was successfully updated`,
       });
       form.reset();
     } catch (error) {
-      console.error("Error while creating user:", error);
+      console.error("Error while updating user:", error);
       const errorMessage =
-        error instanceof Error ? error.message : "Error while creating user";
+        error instanceof Error ? error.message : "Error while updating user";
       toast({
-        title: "Error",
+        title: "Error updating user",
         description: errorMessage,
+        variant: "destructive",
       });
     }
   }

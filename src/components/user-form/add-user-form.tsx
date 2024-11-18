@@ -41,7 +41,7 @@ export default function AddUserForm() {
       const newUser = await createUser(formData);
       toast({
         title: "User created",
-        description: `User ${newUser.name} was created successfully`,
+        description: `User: ${newUser.name} was created successfully`,
       });
       form.reset();
     } catch (error) {
@@ -51,6 +51,7 @@ export default function AddUserForm() {
       toast({
         title: "Error",
         description: errorMessage,
+        variant: "destructive",
       });
     }
   }
