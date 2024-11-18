@@ -44,3 +44,5 @@
   pnpm dev
   ```
 
+You're all set : ) Happy Coding
+
