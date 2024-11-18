@@ -6,6 +6,7 @@ import { Spinner } from "./components/spinner";
 import { User } from "@/interfaces/user";
 import { PopoverComponent } from "@/components/popover/popover";
 import AddUserForm from "@/components/user-form/add-user-form";
+import UpdateUserForm from "@/components/user-form/update-user-form";
 
 export default async function Users({
   searchParams,
@@ -111,7 +112,7 @@ async function UsersTable({
                       </td>
                       <td className="relative whitespace-nowrap py-4 pl-4 pr-4 text-right text-sm font-medium">
                         <PopoverComponent isCreateButton={false}>
-                          <AddUserForm />
+                          <UpdateUserForm id={user.id} />
                         </PopoverComponent>
                       </td>
                     </tr>

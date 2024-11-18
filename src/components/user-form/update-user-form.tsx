@@ -14,6 +14,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
 import { updateUser } from "@/actions/updateUser";
+import { User } from "@prisma/client";
+import { useEffect, useState } from "react";
+import { getUserById } from "@/actions/getUserById";
 
 const formSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters long"),
@@ -23,13 +26,30 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 export default function UpdateUserForm({ id }: { id: number }) {
+  const [user, setUser] = useState<User | null>(null);
+
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      email: "",
+      name: user?.name || "",
+      email: user?.email || "",
     },
   });
+
+  useEffect(() => {
+    const getUser = async () => {
+      const parsedId = id.toString();
+      const user = await getUserById({ id: parsedId });
+      if (user) {
+        form.reset({
+          name: user.name,
+          email: user.email,
+        });
+      }
+      setUser(user);
+    };
+    getUser();
+  }, [id, form]);
 
   const { toast } = useToast();
 
