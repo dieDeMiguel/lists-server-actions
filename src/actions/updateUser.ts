@@ -1,6 +1,7 @@
 "use server";
 import { z } from "zod";
 import { prisma } from "../lib/prisma";
+import { revalidatePath } from "next/cache";
 
 const formSchema = z.object({
   name: z.string().min(3),
@@ -18,12 +19,12 @@ export async function updateUser(formData: FormData) {
     throw new Error("Invalid form data");
   }
 
-  const newUser = await prisma.user.update({
+  const updatedUser = await prisma.user.update({
     data: parsedData.data,
     where: {
       id: parseInt(id),
     },
   });
-
-  return newUser;
+  revalidatePath("/");
+  return updatedUser;
 }

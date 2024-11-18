@@ -7,6 +7,7 @@ import { User } from "@/interfaces/user";
 import { PopoverComponent } from "@/components/popover/popover";
 import AddUserForm from "@/components/user-form/add-user-form";
 import UpdateUserForm from "@/components/user-form/update-user-form";
+import { getUsersBySearchParams } from "@/actions/getUsersBySearchParams";
 
 export default async function Users({
   searchParams,
@@ -58,15 +59,7 @@ async function UsersTable({
     +params.page <= totalPages
       ? +params.page
       : 1;
-  const users = await prisma.user.findMany({
-    take: 6,
-    skip: (page - 1) * 6,
-    where: {
-      name: {
-        contains: search,
-      },
-    },
-  });
+  const users = await getUsersBySearchParams({ page, search });
 
   const currentSearchParams = new URLSearchParams();
   if (search) {

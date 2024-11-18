@@ -59,12 +59,15 @@ export default function UpdateUserForm({ id }: { id: number }) {
       formData.append("name", data.name);
       formData.append("email", data.email);
       formData.append("id", id.toString());
-      const newUser = await updateUser(formData);
+      const updatedUser = await updateUser(formData);
       toast({
         title: "User Updated",
-        description: `User: ${newUser.name} was successfully updated`,
+        description: `User: ${updatedUser.name} was successfully updated`,
       });
-      form.reset();
+      form.reset({
+        name: updatedUser.name,
+        email: updatedUser.email,
+      });
     } catch (error) {
       console.error("Error while updating user:", error);
       const errorMessage =

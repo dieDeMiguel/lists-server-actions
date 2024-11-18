@@ -15,8 +15,11 @@ export function PopoverComponent({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button type="button" variant={isCreateButton ? "addUser" : "editUser"}>
-          {isCreateButton ? "Add user" : "Edit user"}
+        <Button
+          type="button"
+          variant={isCreateButton ? "addUser" : "updateUser"}
+        >
+          {isCreateButton ? "Add user" : "Edit"}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-80">{children}</PopoverContent>
