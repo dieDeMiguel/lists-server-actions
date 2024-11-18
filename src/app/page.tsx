@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { prisma } from "../lib/prisma";
-import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import SearchInput from "./search-input";
 import { Suspense } from "react";
 import { Spinner } from "./components/spinner";
 import { User } from "@/interfaces/user";
-import { PopoverDemo } from "@/components/popover/popover";
+import { PopoverComponent } from "@/components/popover/popover";
+import AddUserForm from "@/components/user-form/add-user-form";
+import UpdateUserForm from "@/components/user-form/update-user-form";
+import { getUsersBySearchParams } from "@/actions/getUsersBySearchParams";
 
 export default async function Users({
   searchParams,
@@ -23,7 +25,9 @@ export default async function Users({
             <SearchInput search={search} />
           </div>
           <div className="mt-0 sm:ml-4 flex-none">
-            <PopoverDemo />
+            <PopoverComponent isCreateButton>
+              <AddUserForm />
+            </PopoverComponent>
           </div>
         </div>
       </div>
@@ -55,15 +59,7 @@ async function UsersTable({
     +params.page <= totalPages
       ? +params.page
       : 1;
-  const users = await prisma.user.findMany({
-    take: 6,
-    skip: (page - 1) * 6,
-    where: {
-      name: {
-        contains: search,
-      },
-    },
-  });
+  const users = await getUsersBySearchParams({ page, search });
 
   const currentSearchParams = new URLSearchParams();
   if (search) {
@@ -108,13 +104,9 @@ async function UsersTable({
                         {user.email}
                       </td>
                       <td className="relative whitespace-nowrap py-4 pl-4 pr-4 text-right text-sm font-medium">
-                        <a
-                          href="#"
-                          className="text-indigo-600 hover:text-indigo-900 inline-flex items-center"
-                        >
-                          Edit
-                          <ChevronRightIcon className="w-4 h-4 ml-1" />
-                        </a>
+                        <PopoverComponent isCreateButton={false}>
+                          <UpdateUserForm id={user.id} />
+                        </PopoverComponent>
                       </td>
                     </tr>
                   ))}

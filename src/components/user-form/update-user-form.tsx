@@ -12,8 +12,11 @@ import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { createUser } from "@/actions/createUser";
 import { useToast } from "@/hooks/use-toast";
+import { updateUser } from "@/actions/updateUser";
+import { User } from "@prisma/client";
+import { useEffect, useState } from "react";
+import { getUserById } from "@/actions/getUserById";
 
 const formSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters long"),
@@ -22,14 +25,31 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
-export default function AddUserForm() {
+export default function UpdateUserForm({ id }: { id: number }) {
+  const [user, setUser] = useState<User | null>(null);
+
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      email: "",
+      name: user?.name || "",
+      email: user?.email || "",
     },
   });
+
+  useEffect(() => {
+    const getUser = async () => {
+      const parsedId = id.toString();
+      const user = await getUserById({ id: parsedId });
+      if (user) {
+        form.reset({
+          name: user.name,
+          email: user.email,
+        });
+      }
+      setUser(user);
+    };
+    getUser();
+  }, [id, form]);
 
   const { toast } = useToast();
 
@@ -38,19 +58,24 @@ export default function AddUserForm() {
       const formData = new FormData();
       formData.append("name", data.name);
       formData.append("email", data.email);
-      const newUser = await createUser(formData);
+      formData.append("id", id.toString());
+      const updatedUser = await updateUser(formData);
       toast({
-        title: "User created",
-        description: `User ${newUser.name} was created successfully`,
+        title: "User Updated",
+        description: `User: ${updatedUser.name} was successfully updated`,
       });
-      form.reset();
+      form.reset({
+        name: updatedUser.name,
+        email: updatedUser.email,
+      });
     } catch (error) {
-      console.error("Error while creating user:", error);
+      console.error("Error while updating user:", error);
       const errorMessage =
-        error instanceof Error ? error.message : "Error while creating user";
+        error instanceof Error ? error.message : "Error while updating user";
       toast({
-        title: "Error",
+        title: "Error updating user",
         description: errorMessage,
+        variant: "destructive",
       });
     }
   }
