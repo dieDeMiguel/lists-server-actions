@@ -6,11 +6,11 @@
 
 ### Main Features
 
-- **Pagination**: Content is paginated accordingly to enhance UX.
-- **Tailored  "Next and Previous" buttons:** User can navigate seamslessly between paginated tables. Buttons are accordingly disabled.
-- **Search**: User can search the tabulated data preserving pagination behaviour.
-- **Loading States:** 'useTransition' hook is used to leverage the best UX possible using loading states.
-- **SSR**: Component architecture is smartly used to leverage the best possible user experience.
+- **Pagination**: Content is paginated to enhance user experience, allowing users to navigate through data efficiently.
+- **Tailored "Next and Previous" Buttons**: Users can seamlessly navigate between paginated tables with buttons that are appropriately enabled or disabled based on the current page.
+- **Search**: Users can search through the tabulated data while preserving pagination behavior, ensuring a smooth and intuitive search experience.
+- **Loading States**: The `useTransition` hook is utilized to provide the best possible user experience by displaying loading states during data fetching and transitions.
+- **Server-Side Rendering (SSR)**: The component architecture is designed to leverage SSR, providing an optimized and fast user experience by rendering content on the server.
 
 ### Installation:
 
@@ -28,11 +28,9 @@
 
 - Then, open the `.env.development.local` file and fill in the required environment variables.
 
-- You'll also need an `OPENAI_API_KEY` to access the OpenAI API.
 
 - You'll need all the `POSTGRES_*` variables from the Vercel dashboard to access the Vercel Postgres API. The Vercel Postgres API is used to store the current backgrounds and their status.
 
-- You'll need a `BLOB_READ_WRITE_TOKEN` from the Vercel dashboard to access the Vercel Blob API. The Vercel Blob API is used to store the uploaded images.
 
 - You can get all the Vercel variables by using the Vercel CLI by running `vercel link`
 
