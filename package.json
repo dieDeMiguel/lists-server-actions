@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "prisma generate && next dev",
+    "dev": "prisma generate && next dev --turbopack -p 3001",
     "build": "prisma generate && prisma db push && next build",
     "start": "next start -p 3001",
     "lint": "pnpm next lint",
