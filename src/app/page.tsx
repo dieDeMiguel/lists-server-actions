@@ -18,7 +18,7 @@ export default async function Users({
   const search = typeof params.search === "string" ? params.search : undefined;
 
   return (
-    <div className="bg-gray-50 min-h-screen px-4 sm:px-6 lg:px-8 pt-12 flex flex-col items-center justify-center">
+    <div className="min-h-screen px-4 sm:px-6 lg:px-8 pt-12 flex flex-col items-center justify-center bg-black">
       <div className="w-full sm:w-[600px] md:w-[700px] lg:w-[900px]">
         <div className="flex items-center justify-between">
           <div className="w-full sm:w-80">
@@ -69,7 +69,7 @@ async function UsersTable({
     currentSearchParams.set("page", page.toString());
   }
   return (
-    <div className="w-full sm:w-[600px] md:w-[700px] lg:w-[900px]">
+    <div className="w-full sm:w-[600px] md:w-[700px] lg:w-[900px] group-has-[[data-pending]]:animate-pulse">
       <div className="mt-8 flow-root">
         <div className="-my-2 -mx-6">
           <div className="inline-block min-w-full py-2 align-middle px-6">
@@ -92,24 +92,35 @@ async function UsersTable({
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
-                  {users.map((user: User) => (
-                    <tr key={user.id}>
-                      <td className="whitespace-nowrap py-4 pr-3 text-sm font-medium text-gray-900 pl-4">
-                        {user.id}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 font-medium max-w-[130px] sm:w-auto truncate">
-                        {user.name}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 max-w-[175px] sm:w-auto truncate">
-                        {user.email}
-                      </td>
-                      <td className="relative whitespace-nowrap py-4 pl-4 pr-4 text-right text-sm font-medium">
-                        <PopoverComponent isCreateButton={false}>
-                          <UpdateUserForm id={user.id} />
-                        </PopoverComponent>
+                  {users.length === 0 ? (
+                    <tr>
+                      <td
+                        colSpan={4}
+                        className="py-4 text-center text-sm text-gray-500"
+                      >
+                        No users found
                       </td>
                     </tr>
-                  ))}
+                  ) : (
+                    users.map((user: User) => (
+                      <tr key={user.id}>
+                        <td className="whitespace-nowrap py-4 pr-3 text-sm font-medium text-gray-900 pl-4">
+                          {user.id}
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 font-medium max-w-[130px] sm:w-auto truncate">
+                          {user.name}
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 max-w-[175px] sm:w-auto truncate">
+                          {user.email}
+                        </td>
+                        <td className="relative whitespace-nowrap py-4 pl-4 pr-4 text-right text-sm font-medium">
+                          <PopoverComponent isCreateButton={false}>
+                            <UpdateUserForm id={user.id} />
+                          </PopoverComponent>
+                        </td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>
@@ -117,7 +128,7 @@ async function UsersTable({
         </div>
       </div>
       <div className="mt-4 flex items-center justify-between">
-        <p className="text-sm text-gray-700">
+        <p className="text-sm text-gray-200">
           Showing{" "}
           <span className="font-semibold">{(page - 1) * perPage + 1}</span> to{" "}
           <span className="font-semibold">

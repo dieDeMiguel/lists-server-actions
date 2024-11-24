@@ -7,6 +7,10 @@ export async function getUsersBySearchParams({page, search}: {page: number, sear
     throw new Error("Invalid form data");
   }
 
+  await new Promise(resolve => {
+    return setTimeout(resolve, 1500);
+  });
+  
   const users = await prisma.user.findMany({
     take: 6,
     skip: (page - 1) * 6,

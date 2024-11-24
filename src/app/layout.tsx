@@ -19,7 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full antialiased">
       <body className={`${inter.className} h-full`}>
-        <ToastProvider>{children}</ToastProvider>
+        <div className="group">
+          <ToastProvider>{children}</ToastProvider>
+        </div>
         <Toaster />
         <Analytics />
       </body>
