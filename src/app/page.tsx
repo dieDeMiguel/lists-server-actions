@@ -150,7 +150,7 @@ async function UsersTable({
 }
 function Loading() {
   return (
-    <div className="flex h-full items-center grow justify-center">
+    <div className="flex items-center grow justify-center bg-slate-100 w-full sm:w-[600px] md:w-[700px] lg:w-[900px] mt-8 max-h-[500px] rounded">
       <Spinner className="w-8 animate-spin" />
     </div>
   );
